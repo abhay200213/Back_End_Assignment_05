@@ -11,6 +11,7 @@ export interface Employee {
 }
 
 import { employees, Employee } from '../../../data/employees';
+import { Employee } from '../models/employee';
 
 export type NewEmployee = Omit<Employee, 'id'>;
 
