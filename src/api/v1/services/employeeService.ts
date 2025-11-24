@@ -1,74 +1,66 @@
 // src/api/v1/services/employeeService.ts
 
-export interface Employee {
-  id: number;
-  name: string;
-  position: string;
-  department: string;
-  email: string;
-  phone: string;
-  branchId: number;
-}
+import { employees } from "../../../data/employees";
+import { Employee } from "../models/employee";
 
-import { employees, Employee } from '../../../data/employees';
-import { Employee } from '../models/employee';
-
-export type NewEmployee = Omit<Employee, 'id'>;
+export type NewEmployee = Omit<Employee, "id">;
 
 let nextEmployeeId = employees.length + 1;
 
+// Get all employees
 export function getAllEmployees(): Employee[] {
   return employees;
 }
 
+// Get employee by ID
 export function getEmployeeById(id: number): Employee | undefined {
   return employees.find((e) => e.id === id);
 }
 
+// Create new employee
 export function createEmployee(data: NewEmployee): Employee {
   const newEmployee: Employee = {
     id: nextEmployeeId++,
-    ...data
+    ...data,
   };
 
   employees.push(newEmployee);
   return newEmployee;
 }
 
+// Update employee
 export function updateEmployee(
   id: number,
   updates: Partial<NewEmployee>
 ): Employee | null {
   const index = employees.findIndex((e) => e.id === id);
-  if (index === -1) {
-    return null;
-  }
+  if (index === -1) return null;
 
-  employees[index] = {
+  const updated = {
     ...employees[index],
-    ...updates
+    ...updates,
   };
 
-  return employees[index];
+  employees[index] = updated;
+  return updated;
 }
 
+// Delete employee
 export function deleteEmployee(id: number): boolean {
   const index = employees.findIndex((e) => e.id === id);
-  if (index === -1) {
-    return false;
-  }
+  if (index === -1) return false;
 
   employees.splice(index, 1);
   return true;
 }
 
-export function getEmployeesByBranch(branchId: number): Employee[] {
+// Get employees by branch
+export function getEmployeesByBranchId(branchId: number): Employee[] {
   return employees.filter((e) => e.branchId === branchId);
 }
 
+// Get employees by department
 export function getEmployeesByDepartment(department: string): Employee[] {
   const normalized = department.toLowerCase();
-  return employees.filter(
-    (e) => e.department.toLowerCase() === normalized
-  );
+  return employees.filter((e) => e.department.toLowerCase() === normalized);
 }
