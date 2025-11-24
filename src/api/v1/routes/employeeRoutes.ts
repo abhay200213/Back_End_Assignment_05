@@ -1,6 +1,8 @@
 // src/api/v1/routes/employeeRoutes.ts
 
 import { Router } from 'express';
+import { validateBody } from "../../middleware/validationMiddleware";
+import { createEmployeeSchema, updateEmployeeSchema } from "../../validation/employeeValidation";
 import {
   handleGetAllEmployees,
   handleGetEmployeeById,
@@ -13,21 +15,29 @@ import {
 
 export const employeeRouter = Router();
 
-// Create Employee
-employeeRouter.post('/', handleCreateEmployee);
+// CREATE employee (validated)
+employeeRouter.post(
+  '/',
+  validateBody(createEmployeeSchema),
+  handleCreateEmployee
+);
 
-// Get All Employees
+// GET all employees
 employeeRouter.get('/', handleGetAllEmployees);
 
-// Logical operations
+// Logical filters
 employeeRouter.get('/by-branch', handleGetEmployeesByBranch);
 employeeRouter.get('/by-department', handleGetEmployeesByDepartment);
 
-// Get Employee by ID
+// GET employee by ID
 employeeRouter.get('/:id', handleGetEmployeeById);
 
-// Update Employee
-employeeRouter.put('/:id', handleUpdateEmployee);
+// UPDATE employee (validated)
+employeeRouter.put(
+  '/:id',
+  validateBody(updateEmployeeSchema),
+  handleUpdateEmployee
+);
 
-// Delete Employee
+// DELETE employee
 employeeRouter.delete('/:id', handleDeleteEmployee);
