@@ -1,5 +1,15 @@
 // src/api/v1/services/employeeService.ts
 
+export interface Employee {
+  id: number;
+  name: string;
+  position: string;
+  department: string;
+  email: string;
+  phone: string;
+  branchId: number;
+}
+
 import { employees, Employee } from '../../../data/employees';
 
 export type NewEmployee = Omit<Employee, 'id'>;
