@@ -1,3 +1,9 @@
+import { Employee } from "../api/v1/models/employee";
+
+export const employees: Employee[] = [
+
+];  
+
 export interface Employee {
   id: number;
   name: string;
