@@ -62,7 +62,7 @@ export function deleteEmployee(id: number): boolean {
   return true;
 }
 
-export function getEmployeesByBranchId(branchId: number): Employee[] {
+export function getEmployeesByBranch(branchId: number): Employee[] {
   return employees.filter((e) => e.branchId === branchId);
 }
 
