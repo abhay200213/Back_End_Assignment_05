@@ -1,6 +1,7 @@
 // src/api/v1/services/branchService.ts
 
-import { branches, Branch } from '../../../data/branches';
+import { branches } from "../../../data/branches";
+import { Branch } from "../models/branch";
 
 export type NewBranch = Omit<Branch, 'id'>;
 
