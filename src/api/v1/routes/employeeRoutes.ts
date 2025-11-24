@@ -1,8 +1,8 @@
 // src/api/v1/routes/employeeRoutes.ts
 
 import { Router } from 'express';
-import { validateBody } from "../../middleware/validationMiddleware";
-import { createEmployeeSchema, updateEmployeeSchema } from "../../validation/employeeValidation";
+import { validateBody } from "../middleware/validationMiddleware";
+import { createEmployeeSchema, updateEmployeeSchema } from "../validation/employeeValidation";
 import {
   handleGetAllEmployees,
   handleGetEmployeeById,

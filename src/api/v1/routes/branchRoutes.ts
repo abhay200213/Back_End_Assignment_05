@@ -1,8 +1,8 @@
 // src/api/v1/routes/branchRoutes.ts
 
 import { Router } from 'express';
-import { validateBody } from "../../middleware/validationMiddleware";
-import { createBranchSchema, updateBranchSchema } from "../../validation/branchValidation";
+import { validateBody } from "../middleware/validationMiddleware";
+import { createBranchSchema, updateBranchSchema } from "../validation/branchValidation";
 
 import {
   handleGetAllBranches,
