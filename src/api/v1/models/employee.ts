@@ -1,5 +1,4 @@
 // src/api/v1/models/employee.ts
-
 export interface Employee {
   id: number;
   name: string;
@@ -9,3 +8,5 @@ export interface Employee {
   phone: string;
   branchId: number;
 }
+
+export type NewEmployee = Omit<Employee, "id">;
