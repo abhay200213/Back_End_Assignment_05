@@ -1,21 +1,21 @@
+// src/config/firebaseConfig.ts
 
-export const auth = {
-  verifyIdToken: async (_token: string): Promise<void> => {
-    return;
-  },
-  getUser: async (_uid: string): Promise<void> => {
-    return;
-  }
-};
+import admin from "firebase-admin";
+import path from "path";
 
-export const db = {
-  collection: (_name: string): unknown => {
-    return {};
-  },
-  runTransaction: async <T>(_updateFn: () => Promise<T>): Promise<T | void> => {
-    return;
-  },
-  batch: (): unknown => {
-    return {};
-  }
-};
+const serviceAccountPath = path.resolve(
+  __dirname,
+  "../../firebase-service-account.json"
+);
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require(serviceAccountPath)
+    ),
+  });
+}
+
+export const auth = admin.auth();
+export const db = admin.firestore();
