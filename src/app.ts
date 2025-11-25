@@ -3,7 +3,7 @@ dotenv.config();
 
 import express, { Request, Response } from 'express';
 import morgan from 'morgan';
-import helmet from 'helmet';                           //  Helmet added
+import helmet from 'helmet';
 import { employeeRouter } from './api/v1/routes/employeeRoutes';
 import { branchRouter } from './api/v1/routes/branchRoutes';
 
@@ -14,24 +14,47 @@ app.use(morgan('combined'));
 
 //  ---------------- SECURITY MIDDLEWARE (HELMET) ----------------
 
-// Custom Helmet configuration recommended for APIs
+// Base Helmet for APIs, with CSP & COEP disabled to avoid issues with tools like Swagger
 app.use(
   helmet({
-    contentSecurityPolicy: false,     // Swagger & APIs often break with strict CSP
-    referrerPolicy: { policy: 'no-referrer' },
-    crossOriginResourcePolicy: { policy: 'same-site' },
-    xssFilter: true,                   // Older Helmet XSS protection
-    noSniff: true,                     // Prevent MIME-type sniffing
-    permittedCrossDomainPolicies: { policy: 'none' },
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
   })
 );
 
-//  Additional recommended security headers for APIs
-app.use(helmet.hsts({ maxAge: 63072000 }));   // Force HTTPS (safe for prod)
-app.use(helmet.frameguard({ action: 'deny' })); // Prevent clickjacking
-app.use(helmet.hidePoweredBy());               // Hide X-Powered-By: Express
+// Extra API-focused headers
+app.use(
+  helmet.referrerPolicy({
+    policy: 'no-referrer',
+  })
+);
 
-// ---------------------------------------------------------------
+app.use(
+  helmet.crossOriginResourcePolicy({
+    policy: 'same-site',
+  })
+);
+
+// HSTS (mainly effective in production over HTTPS)
+app.use(
+  helmet.hsts({
+    maxAge: 63072000, // 2 years
+    includeSubDomains: true,
+    preload: false,
+  })
+);
+
+// Clickjacking protection
+app.use(
+  helmet.frameguard({
+    action: 'deny',
+  })
+);
+
+// Hide Express fingerprint
+app.use(helmet.hidePoweredBy());
+
+//  --------------------------------------------------------------
 
 // Health check
 app.get('/health', (req: Request, res: Response) => {

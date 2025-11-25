@@ -21,6 +21,7 @@
   "homepage": "https://github.com/abhay200213/Back_End_Assignment_02#readme",
   "devDependencies": {
     "@types/express": "^5.0.5",
+    "@types/helmet": "^0.0.48",
     "@types/jest": "^30.0.0",
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.10.1",
@@ -35,6 +36,7 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "firebase-admin": "^13.6.0",
+    "helmet": "^8.1.0",
     "joi": "^18.0.2",
     "morgan": "^1.10.1"
   }
