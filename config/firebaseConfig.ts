@@ -1,21 +1,16 @@
-// src/config/firebaseConfig.ts
+import admin from 'firebase-admin';
+import dotenv from 'dotenv';
 
-import admin from "firebase-admin";
-import path from "path";
-
-const serviceAccountPath = path.resolve(
-  __dirname,
-  "../../firebase-service-account.json"
-);
+dotenv.config();
 
 if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require(serviceAccountPath)
-    ),
-  });
+    admin.initializeApp({
+        credential: admin.credential.cert({
+            projectId: process.env.FIREBASE_PROJECT_ID,
+            clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+            privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+        }),
+    });
 }
 
-export const auth = admin.auth();
 export const db = admin.firestore();

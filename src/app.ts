@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express, { Request, Response } from 'express';
 import morgan from 'morgan';
 import { employeeRouter } from './api/v1/routes/employeeRoutes';
