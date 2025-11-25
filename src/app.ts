@@ -4,6 +4,7 @@ dotenv.config();
 import express, { Request, Response } from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import cors from 'cors';
 import { employeeRouter } from './api/v1/routes/employeeRoutes';
 import { branchRouter } from './api/v1/routes/branchRoutes';
 
@@ -12,9 +13,7 @@ const app = express();
 app.use(express.json());
 app.use(morgan('combined'));
 
-//  ---------------- SECURITY MIDDLEWARE (HELMET) ----------------
-
-// Base Helmet for APIs, with CSP & COEP disabled to avoid issues with tools like Swagger
+// ---------------- HELMET SECURITY ----------------
 app.use(
   helmet({
     contentSecurityPolicy: false,
@@ -22,7 +21,6 @@ app.use(
   })
 );
 
-// Extra API-focused headers
 app.use(
   helmet.referrerPolicy({
     policy: 'no-referrer',
@@ -35,26 +33,39 @@ app.use(
   })
 );
 
-// HSTS (mainly effective in production over HTTPS)
 app.use(
   helmet.hsts({
-    maxAge: 63072000, // 2 years
+    maxAge: 63072000,
     includeSubDomains: true,
     preload: false,
   })
 );
 
-// Clickjacking protection
 app.use(
   helmet.frameguard({
     action: 'deny',
   })
 );
 
-// Hide Express fingerprint
 app.use(helmet.hidePoweredBy());
 
-//  --------------------------------------------------------------
+// ---------------- CORS SECURITY ------------------
+
+// Only allow your dev frontend
+const allowedOrigin = 'http://localhost:5173';
+
+app.use(
+  cors({
+    origin: allowedOrigin,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['X-Total-Count'],
+    credentials: false,
+    optionsSuccessStatus: 204,
+  })
+);
+
+// -----------------------------------------------
 
 // Health check
 app.get('/health', (req: Request, res: Response) => {
