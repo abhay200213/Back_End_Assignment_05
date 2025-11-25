@@ -1,3 +1,6 @@
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './swagger';
+
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -12,6 +15,9 @@ const app = express();
 
 app.use(express.json());
 app.use(morgan('combined'));
+
+// Swagger UI docs
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // ---------------- HELMET SECURITY ----------------
 app.use(
